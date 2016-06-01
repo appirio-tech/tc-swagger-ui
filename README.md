@@ -1,1 +1,0 @@
-# tc-swagger-ui
