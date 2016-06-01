@@ -1,0 +1,860 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "",
+    "title": "ap-review-microservice",
+    "description": "TODO: Add a description",
+    "license": {
+      "name": "MIT",
+      "url": "http://github.com/gruntjs/grunt/blob/master/LICENSE-MIT"
+    }
+  },
+  "host": "api.topcoder.com",
+  "basePath": "/v3",
+  "securityDefinitions": {},
+  "schemes": [
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/reviews/{challengeId}/aggregateScores/": {
+      "put": {
+        "description": "Performs score aggragation for a given challenge.\nDuring the review process, reviewers will create multiple reviews. Each review is\nindividually scored at the time that it is saved. At the end of the review phase\nthese individual reviews need to be processed and aggregated to generate the final\nscore for a given submission in a given challenge, updating the scores in the\nsubmission and generating the project result records.",
+        "operationId": "Update_Aggregate scores_",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "challengeId",
+            "in": "path",
+            "required": false,
+            "x-is-map": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Aggregatescoresresponse"
+            }
+          }
+        }
+      }
+    },
+    "/feedbacks/copilots/{handle}": {
+      "get": {
+        "description": "Fetches feedback records for a given copilot",
+        "operationId": "Gets copilot feedback_",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": true,
+            "x-is-map": false,
+            "type": "string",
+            "description": "number of feedback records to be retrieved. If this is greater than 50, only 50 records are returned (ex: limit=50)"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": true,
+            "x-is-map": false,
+            "type": "string",
+            "description": "pagination offset (ex: offset=101)"
+          },
+          {
+            "name": "handle",
+            "in": "path",
+            "required": false,
+            "x-is-map": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Getscopilotfeedbackresponse"
+            }
+          }
+        }
+      }
+    },
+    "/reviews/{challengeId}/assignNextReview": {
+      "put": {
+        "description": "For peer review challenges, assign next review will look for the next submission\nthat the currently logged in user has to review, and perform the association.\nNote:\nThe review phase of the challenge must be open;\nThe member must have submitted to the challenge;\nThere must still be submissions available for the member to review. I.e. submissions of other members that the member has not yet reviewed;\nIf the member has 5 or more reviews, they can only start a new review if all other reviews have been submitted (committed = 1)\nThe response content is the new review ID. The /reviews endpoint can be used to fetch it.",
+        "operationId": "Update_Assign next review_",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "challengeId",
+            "in": "path",
+            "required": false,
+            "x-is-map": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Assignnextreviewresponse"
+            }
+          }
+        }
+      }
+    },
+    "/reviews/": {
+      "get": {
+        "description": "Fetches reviews\nNote: Users may only see reviews that they created, or submitted reviews (commited = 1) of their own submissions done by other users.",
+        "operationId": "Fetch reviews_",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": true,
+            "x-is-map": false,
+            "type": "string",
+            "description": "How many records to return"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": true,
+            "x-is-map": false,
+            "type": "string",
+            "description": "How many records to skip"
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "required": true,
+            "x-is-map": false,
+            "type": "string",
+            "description": "key=value pairs\n* challengeId id of the challenge"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Fetchreviewsresponse"
+            }
+          }
+        }
+      }
+    },
+    "/reviews/{reviewId}": {
+      "get": {
+        "description": "Fetches a specific review\nNote: Users may only see review that they created, or submitted reviews (commited = 1) of their own submissions done by other users.",
+        "operationId": "Get review_",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "filter",
+            "in": "query",
+            "required": false,
+            "x-is-map": false,
+            "type": "string",
+            "description": "the filter in key=value format\n* challengeId (enum[string], optional) Id of the challenge for which to retrieve reviews ()"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "x-is-map": false,
+            "type": "string"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "x-is-map": false,
+            "type": "string"
+          },
+          {
+            "name": "reviewId",
+            "in": "path",
+            "required": false,
+            "x-is-map": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Getreviewresponse"
+            }
+          }
+        }
+      },
+      "put": {
+        "description": "Updates a review\nNote: \nUsers may only update reviews that they created and have not been submitted yet (commited = 0).\nThe only field that can be updated is the committed field.",
+        "operationId": "Update review_",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "reviewId",
+            "in": "path",
+            "required": false,
+            "x-is-map": false,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "x-is-map": false,
+            "schema": {
+              "$ref": "#/definitions/Updatereviewrequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Updatereviewresponse"
+            }
+          }
+        }
+      }
+    },
+    "/reviewItems/": {
+      "get": {
+        "description": "Fetches review items\nNote: Users may only see reviews items related to reviews that they created, or submitted reviews (commited = 1) of their own submissions done by other users.",
+        "operationId": "Get review items_",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "filter",
+            "in": "query",
+            "required": false,
+            "x-is-map": false,
+            "type": "string",
+            "description": "the filter in key=value format\n* reviewId (enum[string], optional) Id of the review for which to retrieve review items ()"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "x-is-map": false,
+            "type": "string"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "x-is-map": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Getreviewitemsresponse"
+            }
+          }
+        }
+      },
+      "put": {
+        "description": "Updates review items\nNote: Users may only update review items related to reviews that they created and are not submitted (committed = 0).",
+        "operationId": "Updates review items_",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "x-is-map": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Updatesreviewitemsrequest"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Updatesreviewitemsresponse"
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Creates new review items\nNote: Users may only create review items related to reviews that they created and are not submitted (committed = 0).",
+        "operationId": "Create review items_",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "x-is-map": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Createreviewitemsrequest"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Createreviewitemsresponse"
+            }
+          }
+        }
+      }
+    },
+    "/scorecards/": {
+      "get": {
+        "description": "Fetches scorecards",
+        "operationId": "Get scorecards_",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "filter",
+            "in": "query",
+            "required": false,
+            "x-is-map": false,
+            "type": "string",
+            "description": "the filter in key=value format\n* challengeId (number, optional) Id of the challenge ()\n* reviewId (number, optional) id of the reivew ()"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "x-is-map": false,
+            "type": "string"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "x-is-map": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Getscorecardsresponse"
+            }
+          }
+        }
+      }
+    },
+    "/scorecardQuestions/": {
+      "get": {
+        "description": "Fetches scorecard questions",
+        "operationId": "Get scorecard questions_",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "filter",
+            "in": "query",
+            "required": false,
+            "x-is-map": false,
+            "type": "string",
+            "description": "the filter in key=value format\n* scorecardId (number, optional) Id of the scorecard ()"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "x-is-map": false,
+            "type": "string"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "x-is-map": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Getscorecardquestionsresponse"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Aggregatescoresresponse": {
+      "title": "Aggregate scores response",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "result": {
+          "type": "object"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "result",
+        "version"
+      ]
+    },
+    "Getscopilotfeedbackresponse": {
+      "title": "Gets copilot feedback response",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "result": {
+          "type": "object"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "result",
+        "version"
+      ]
+    },
+    "Assignnextreviewresponse": {
+      "title": "Assign next review response",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "result": {
+          "type": "object"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "result",
+        "version"
+      ]
+    },
+    "Fetchreviewsresponse": {
+      "title": "Fetch reviews response",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "result": {
+          "type": "object"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "result",
+        "version"
+      ]
+    },
+    "Getreviewresponse": {
+      "title": "Get review response",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "result": {
+          "type": "object"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "result",
+        "version"
+      ]
+    },
+    "Updatereviewrequest": {
+      "title": "Update review request",
+      "type": "object",
+      "properties": {
+        "updatedAt": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string"
+        },
+        "createdBy": {
+          "type": "string"
+        },
+        "updatedBy": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "resourceId": {
+          "type": "string"
+        },
+        "submissionId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "projectPhaseId": {
+          "type": "string"
+        },
+        "scorecardId": {
+          "type": "string"
+        },
+        "committed": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "uploadId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "score": {
+          "type": "string"
+        },
+        "initialScore": {
+          "type": "string"
+        },
+        "reviewerUserId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "submitterUserId": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "required": [
+        "updatedAt",
+        "createdAt",
+        "createdBy",
+        "updatedBy",
+        "id",
+        "resourceId",
+        "submissionId",
+        "projectPhaseId",
+        "scorecardId",
+        "committed",
+        "uploadId",
+        "score",
+        "initialScore",
+        "reviewerUserId",
+        "submitterUserId"
+      ]
+    },
+    "Updatereviewresponse": {
+      "title": "Update review response",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "result": {
+          "type": "object"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "result",
+        "version"
+      ]
+    },
+    "Getreviewitemsresponse": {
+      "title": "Get review items response",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "result": {
+          "type": "object"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "result",
+        "version"
+      ]
+    },
+    "Createreviewitemsrequest": {
+      "title": "Create review items request",
+      "type": "object",
+      "properties": {
+        "updatedAt": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string"
+        },
+        "createdBy": {
+          "type": "string"
+        },
+        "updatedBy": {
+          "type": "string"
+        },
+        "reviewId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "scorecardQuestionId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "uploadId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "answer": {
+          "type": "string"
+        },
+        "sort": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "reviewerUserId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "submitterUserId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "committed": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "comments": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "updatedAt",
+        "createdAt",
+        "createdBy",
+        "updatedBy",
+        "reviewId",
+        "scorecardQuestionId",
+        "uploadId",
+        "answer",
+        "sort",
+        "reviewerUserId",
+        "submitterUserId",
+        "committed",
+        "comments"
+      ]
+    },
+    "Createreviewitemsresponse": {
+      "title": "Create review items response",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "result": {
+          "type": "object"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "result",
+        "version"
+      ]
+    },
+    "Updatesreviewitemsrequest": {
+      "title": "Updates review items request",
+      "type": "object",
+      "properties": {
+        "updatedAt": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string"
+        },
+        "createdBy": {
+          "type": "string"
+        },
+        "updatedBy": {
+          "type": "string"
+        },
+        "reviewId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "scorecardQuestionId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "uploadId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "answer": {
+          "type": "string"
+        },
+        "sort": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "reviewerUserId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "submitterUserId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "committed": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "comments": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "updatedAt",
+        "createdAt",
+        "createdBy",
+        "updatedBy",
+        "reviewId",
+        "scorecardQuestionId",
+        "id",
+        "uploadId",
+        "answer",
+        "sort",
+        "reviewerUserId",
+        "submitterUserId",
+        "committed",
+        "comments"
+      ]
+    },
+    "Updatesreviewitemsresponse": {
+      "title": "Updates review items response",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "result": {
+          "type": "object"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "result",
+        "version"
+      ]
+    },
+    "Getscorecardsresponse": {
+      "title": "Get scorecards response",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "result": {
+          "type": "object"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "result",
+        "version"
+      ]
+    },
+    "Getscorecardquestionsresponse": {
+      "title": "Get scorecard questions response",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "result": {
+          "type": "object"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "result",
+        "version"
+      ]
+    }
+  }
+}

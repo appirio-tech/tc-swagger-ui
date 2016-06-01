@@ -1,0 +1,932 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "",
+    "title": "ap-member-microservice",
+    "description": "TODO: Add a description",
+    "license": {
+      "name": "MIT",
+      "url": "http://github.com/gruntjs/grunt/blob/master/LICENSE-MIT"
+    }
+  },
+  "host": "api.topcoder-dev.com",
+  "basePath": "/v3",
+  "securityDefinitions": {},
+  "schemes": [
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/members/{handle}": {
+      "get": {
+        "description": "Retreives Member profile. The parameter, user handle needs to be passed to retrieve the profile.\nFor the logged in users, all the fields are returned.\nFor users who are not logged in or for the users who are seeing other users' profile,\nthe following feilds are not shown: firstName, lastName, otherName, email and address",
+        "tags": [
+          "Member Microservice API"
+        ],
+        "operationId": "Get Member Profile_",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "handle",
+            "in": "path",
+            "required": true,
+            "x-is-map": false,
+            "type": "string",
+            "description": "handle of the user"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/GetMemberProfileresponse"
+            }
+          }
+        }
+      },
+      "put": {
+        "description": "Update Member profile. Handle and request object needs to be passed. Only the logged\nin user can update the member profile.",
+        "tags": [
+          "Member Microservice API"
+        ],
+        "operationId": "Put Member profile_",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "handle",
+            "in": "path",
+            "required": true,
+            "x-is-map": false,
+            "type": "string",
+            "description": "handle of the user"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "x-is-map": false,
+            "schema": {
+              "$ref": "#/definitions/PutMemberprofilerequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/PutMemberprofileresponse"
+            }
+          }
+        }
+      }
+    },
+    "/members/{handle}/photoUploadUrl": {
+      "post": {
+        "description": "This endpoint is used to generate the photoUrl. Only the logged in user can generate\nthe photoUploadUrl",
+        "tags": [
+          "Member Microservice API"
+        ],
+        "operationId": "Create_Generate upload photo url_",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "handle",
+            "in": "path",
+            "required": true,
+            "x-is-map": false,
+            "type": "string",
+            "description": "handle of the user"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "x-is-map": false,
+            "schema": {
+              "$ref": "#/definitions/Generateuploadphotourlrequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Generateuploadphotourlresponse"
+            }
+          }
+        }
+      }
+    },
+    "/members/{handle}/photo": {
+      "put": {
+        "description": "photoURL needs to be passed. Only the logged in user can update the member photo Url",
+        "tags": [
+          "Member Microservice API"
+        ],
+        "operationId": "Put Member photo URL_",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "handle",
+            "in": "path",
+            "required": true,
+            "x-is-map": false,
+            "type": "string",
+            "description": "handle of the user"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "x-is-map": false,
+            "schema": {
+              "$ref": "#/definitions/PutMemberphotoURLrequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/PutMemberphotoURLresponse"
+            }
+          }
+        }
+      }
+    },
+    "/members/{handle}/financial": {
+      "get": {
+        "description": "Retreives member's financial information. Ther user handle needs to be passed to\nretrieve the financial information",
+        "tags": [
+          "Member Microservice API"
+        ],
+        "operationId": "Get Member financial_",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "handle",
+            "in": "path",
+            "required": true,
+            "x-is-map": false,
+            "type": "string",
+            "description": "handle of the user"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/GetMemberfinancialresponse"
+            }
+          }
+        }
+      }
+    },
+    "/members/{handle}/skills/?limit=50&offset=0": {
+      "get": {
+        "description": "Retrieve a member's skill set. \n#### Skill details\n<table>\n<tr><td>tagId</td><td>Id for the tag / skill from TaggingService.  **NOTE** - tagId is the key of the object.</td></tr>\n<tr><td>tagName</td><td>Name of the tag from the TaggingService</td></tr>\n<tr><td>sources</td><td>Array of string indicating source of this skill.</td></tr>\n<tr><td>score</td><td>User's score for this skill as caclulcated by the background task</td></tr>\n</table>",
+        "tags": [
+          "Member Microservice API"
+        ],
+        "operationId": "Get member's aggregated skills_",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "handle",
+            "in": "path",
+            "required": true,
+            "x-is-map": false,
+            "type": "string",
+            "description": "member's user handle"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "x-is-map": false,
+            "type": "number",
+            "format": "double",
+            "description": "Maximum number of skills to return. **Default 100**."
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "x-is-map": false,
+            "type": "number",
+            "format": "double",
+            "description": "offset used for pagination"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Getmember'saggregatedskillsresponse"
+            }
+          }
+        }
+      }
+    },
+    "/members/{handle}/skills/": {
+      "patch": {
+        "description": "Used to add / hide a member's skills. Only the tags/skills included in the patch request <br>\nare updated. All other skills are not touched.\n##### Request body details\n<table>\n<tr><td>tagId</td><td>(requried, number) - Id of Tag / skill being added/hidden, source TaggingService. **NOTE** - tagId is the key of the object.</td></tr>\n<tr><td>hidden</td><td>(required, boolean) - true if user wants skill to be hidden, else false </td></tr>\n</table>",
+        "tags": [
+          "Member Microservice API"
+        ],
+        "operationId": "Update member's skills_",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "handle",
+            "in": "path",
+            "required": true,
+            "x-is-map": false,
+            "type": "string",
+            "description": "member's user handle"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "x-is-map": false,
+            "schema": {
+              "$ref": "#/definitions/Updatemember'sskillsrequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Updatemember'sskillsresponse"
+            }
+          },
+          "401": {
+            "description": "Error: Missing Bearer or JWT is expired."
+          },
+          "404": {
+            "description": "Error: User does not exist."
+          }
+        }
+      }
+    },
+    "/members/{handle}/stats": {
+      "get": {
+        "description": "Retreives member's statistics. The user handle needs to be passed to retrieve the\nstatistics information",
+        "tags": [
+          "Member Microservice API"
+        ],
+        "operationId": "Get Member statistics_",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "handle",
+            "in": "path",
+            "required": true,
+            "x-is-map": false,
+            "type": "string",
+            "description": "handle of the user"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/GetMemberstatisticsresponse"
+            }
+          }
+        }
+      }
+    },
+    "/members/{handle}/stats/history": {
+      "get": {
+        "description": "Retrieves member's history statistics. The user handle needs to be passed to\nretrieve the statistics information",
+        "tags": [
+          "Member Microservice API"
+        ],
+        "operationId": "Get Member history statistics_",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "handle",
+            "in": "path",
+            "required": true,
+            "x-is-map": false,
+            "type": "string",
+            "description": "handle of the user"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/GetMemberhistorystatisticsresponse"
+            }
+          }
+        }
+      }
+    },
+    "/members/stats/distribution?filter=track%3DDEVELOP%26subTrack%3DDESIGN": {
+      "get": {
+        "description": "Member distribution stats agnostic to the user",
+        "tags": [
+          "Member Microservice API"
+        ],
+        "operationId": "Get Member statistics_",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "filter",
+            "in": "query",
+            "required": true,
+            "x-is-map": false,
+            "type": "string",
+            "description": "parameter for filtering the fields according to v3 spec\n+ track - Track\n+ subTrack - Sub track"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/GetMemberstatisticsresponse"
+            }
+          }
+        }
+      }
+    },
+    "/members/{handle}/externalAccounts?fields=linkedIn,twitter": {
+      "get": {
+        "description": "Retreives member's external accounts. The user handle needs to be passed to\nretrieve member external accounts",
+        "tags": [
+          "Member Microservice API"
+        ],
+        "operationId": "Get Member External accounts_",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "handle",
+            "in": "path",
+            "required": true,
+            "x-is-map": false,
+            "type": "string",
+            "description": "handle of the user"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/GetMemberExternalaccountsresponse"
+            }
+          }
+        }
+      }
+    },
+    "/members/{handle}/externalLinks": {
+      "get": {
+        "description": "Retrieves member's external links data. The user handle needs to be passed to retrieve\nmember external links.",
+        "tags": [
+          "Member Microservice API"
+        ],
+        "operationId": "Get Member External links data_",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "handle",
+            "in": "path",
+            "required": true,
+            "x-is-map": false,
+            "type": "string",
+            "description": "handle of the user"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/GetMemberExternallinksdataresponse"
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Updates member external link. The user handle needs to be passed to update member external link.",
+        "tags": [
+          "Member Microservice API"
+        ],
+        "operationId": "Update member external link_",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "handle",
+            "in": "path",
+            "required": true,
+            "x-is-map": false,
+            "type": "string",
+            "description": "handle of the user"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "x-is-map": false,
+            "schema": {
+              "$ref": "#/definitions/Updatememberexternallinkrequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Updatememberexternallinkresponse"
+            }
+          },
+          "401": {
+            "description": "Error: Missing Bearer or JWT is expired."
+          },
+          "404": {
+            "description": "Error: User does not exist."
+          }
+        }
+      }
+    },
+    "/members/{handle}/externalLinks/2846a2928082a41ae7f3c39e08c4340c": {
+      "delete": {
+        "description": "Deletes member external link. The user handle needs to be passed to delete the member external link.",
+        "tags": [
+          "Member Microservice API"
+        ],
+        "operationId": "Delete member external link_",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "handle",
+            "in": "path",
+            "required": true,
+            "x-is-map": false,
+            "type": "string",
+            "description": "handle of the user"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Deletememberexternallinkresponse"
+            }
+          }
+        }
+      }
+    },
+    "/feedbacks/copilots/{handle}": {
+      "get": {
+        "description": "Retrives copilot feedback information. The user handle needs to be passed to retrieve\ncopilot feedback.",
+        "tags": [
+          "Member Microservice API"
+        ],
+        "operationId": "GET copilot feedback_",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "handle",
+            "in": "path",
+            "required": true,
+            "x-is-map": false,
+            "type": "string",
+            "description": "handle of the user"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/GETcopilotfeedbackresponse"
+            }
+          }
+        }
+      }
+    },
+    "/members/_search": {
+      "post": {
+        "description": "Search for a member or a set of members based on the query passed in the body. The query json\nshould be passed in the same format as elasticsearch query format. The elasticsearch reference \nmanual has documented the list of [queries](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html)\n that can be used. The queries can be performed on any of the fields returned by the api.",
+        "tags": [
+          "Member Microservice API"
+        ],
+        "operationId": "Create_Search for members_",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "x-is-map": false,
+            "schema": {
+              "type": "object"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Searchformembersresponse"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "GetMemberProfileresponse": {
+      "title": "Get Member Profile response",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "result": {
+          "type": "object"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "result",
+        "version"
+      ]
+    },
+    "Generateuploadphotourlrequest": {
+      "title": "Generate upload photo url request",
+      "type": "object",
+      "properties": {
+        "param": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "param"
+      ]
+    },
+    "Generateuploadphotourlresponse": {
+      "title": "Generate upload photo url response",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "result": {
+          "type": "object"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "result",
+        "version"
+      ]
+    },
+    "PutMemberprofilerequest": {
+      "title": "Put Member profile request",
+      "type": "object",
+      "properties": {
+        "param": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "param"
+      ]
+    },
+    "PutMemberprofileresponse": {
+      "title": "Put Member profile response",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "result": {
+          "type": "object"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "result",
+        "version"
+      ]
+    },
+    "PutMemberphotoURLrequest": {
+      "title": "Put Member photo URL request",
+      "type": "object",
+      "properties": {
+        "param": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "param"
+      ]
+    },
+    "PutMemberphotoURLresponse": {
+      "title": "Put Member photo URL response",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "result": {
+          "type": "object"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "result",
+        "version"
+      ]
+    },
+    "GetMemberfinancialresponse": {
+      "title": "Get Member financial response",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "result": {
+          "type": "object"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "result",
+        "version"
+      ]
+    },
+    "Getmember'saggregatedskillsresponse": {
+      "title": "Get member's aggregated skills response",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "result": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "id",
+        "result"
+      ]
+    },
+    "Updatemember'sskillsrequest": {
+      "title": "Update member's skills request",
+      "type": "object",
+      "properties": {
+        "param": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "param"
+      ]
+    },
+    "Updatemember'sskillsresponse": {
+      "title": "Update member's skills response",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "result": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "id",
+        "result"
+      ]
+    },
+    "GetMemberstatisticsresponse": {
+      "title": "Get Member statistics response",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "result": {
+          "type": "object"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "result",
+        "version"
+      ]
+    },
+    "GetMemberhistorystatisticsresponse": {
+      "title": "Get Member history statistics response",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "result": {
+          "type": "object"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "result",
+        "version"
+      ]
+    },
+    "GetMemberExternalaccountsresponse": {
+      "title": "Get Member External accounts response",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "result": {
+          "type": "object"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "result",
+        "version"
+      ]
+    },
+    "GetMemberExternallinksdataresponse": {
+      "title": "Get Member External links data response",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "result": {
+          "type": "object"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "result",
+        "version"
+      ]
+    },
+    "Updatememberexternallinkrequest": {
+      "title": "Update member external link request",
+      "type": "object",
+      "properties": {
+        "param": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "param"
+      ]
+    },
+    "Updatememberexternallinkresponse": {
+      "title": "Update member external link response",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "result": {
+          "type": "object"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "result",
+        "version"
+      ]
+    },
+    "Deletememberexternallinkresponse": {
+      "title": "Delete member external link response",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "result": {
+          "type": "object"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "result",
+        "version"
+      ]
+    },
+    "GETcopilotfeedbackresponse": {
+      "title": "GET copilot feedback response",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "result": {
+          "type": "object"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "result",
+        "version"
+      ]
+    },
+    "Searchformembersresponse": {
+      "title": "Search for members response",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "result": {
+          "type": "object"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "result",
+        "version"
+      ]
+    }
+  }
+}

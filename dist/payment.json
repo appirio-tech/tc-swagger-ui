@@ -1,0 +1,385 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "",
+    "title": "ap-project-microservice",
+    "description": "TODO: Add a description",
+    "license": {
+      "name": "MIT",
+      "url": "http://github.com/gruntjs/grunt/blob/master/LICENSE-MIT"
+    }
+  },
+  "host": "api.topcoder-dev.com",
+  "basePath": "/v3",
+  "securityDefinitions": {},
+  "schemes": [
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/projects/user": {
+      "get": {
+        "description": "",
+        "operationId": "Retrieves user projects_",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Retrievesuserprojectsresponse"
+            }
+          }
+        }
+      }
+    },
+    "/projects/{projectId}/billingaccount": {
+      "post": {
+        "description": "",
+        "operationId": "Create_Associate Billing Account_",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "x-is-map": false,
+            "type": "string",
+            "description": "the project id"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "x-is-map": false,
+            "schema": {
+              "$ref": "#/definitions/AssociateBillingAccountrequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/AssociateBillingAccountresponse"
+            }
+          }
+        }
+      }
+    },
+    "/projects/{projectId}/copilot": {
+      "post": {
+        "description": "",
+        "operationId": "Add Copilot_",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "x-is-map": false,
+            "type": "string",
+            "description": "the project id"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "x-is-map": false,
+            "schema": {
+              "$ref": "#/definitions/AddCopilotrequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/AddCopilotresponse"
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "",
+        "operationId": "Remove Copilot_",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "x-is-map": false,
+            "type": "string",
+            "description": "the project id"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "x-is-map": false,
+            "schema": {
+              "$ref": "#/definitions/RemoveCopilotrequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/RemoveCopilotresponse"
+            }
+          }
+        }
+      }
+    },
+    "/projects": {
+      "post": {
+        "description": "The project description is optional.",
+        "operationId": "Create Project_",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "x-is-map": false,
+            "schema": {
+              "$ref": "#/definitions/CreateProjectrequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/CreateProjectresponse"
+            }
+          }
+        }
+      }
+    },
+    "/projects/{projectId}": {
+      "get": {
+        "description": "",
+        "operationId": "Retrieves project general info_",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "x-is-map": false,
+            "type": "string",
+            "description": "the project id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Retrievesprojectgeneralinforesponse"
+            }
+          },
+          "400": {
+            "description": "Unexpected error in API call. See HTTP response body for details."
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Retrievesuserprojectsresponse": {
+      "title": "Retrieves user projects response",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "result": {
+          "type": "object"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "result",
+        "version"
+      ]
+    },
+    "AssociateBillingAccountrequest": {
+      "title": "Associate Billing Account request",
+      "type": "object",
+      "properties": {
+        "billingAccountId": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "required": [
+        "billingAccountId"
+      ]
+    },
+    "AssociateBillingAccountresponse": {
+      "title": "Associate Billing Account response",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "result": {
+          "type": "object"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "result",
+        "version"
+      ]
+    },
+    "AddCopilotrequest": {
+      "title": "Add Copilot request",
+      "type": "object",
+      "properties": {
+        "copilotUserId": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "required": [
+        "copilotUserId"
+      ]
+    },
+    "AddCopilotresponse": {
+      "title": "Add Copilot response",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "result": {
+          "type": "object"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "result",
+        "version"
+      ]
+    },
+    "RemoveCopilotrequest": {
+      "title": "Remove Copilot request",
+      "type": "object",
+      "properties": {
+        "copilotUserId": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "required": [
+        "copilotUserId"
+      ]
+    },
+    "RemoveCopilotresponse": {
+      "title": "Remove Copilot response",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "result": {
+          "type": "object"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "result",
+        "version"
+      ]
+    },
+    "CreateProjectrequest": {
+      "title": "Create Project request",
+      "type": "object",
+      "properties": {
+        "projectName": {
+          "type": "string"
+        },
+        "projectDescription": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "projectName",
+        "projectDescription"
+      ]
+    },
+    "CreateProjectresponse": {
+      "title": "Create Project response",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "result": {
+          "type": "object"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "result",
+        "version"
+      ]
+    },
+    "Retrievesprojectgeneralinforesponse": {
+      "title": "Retrieves project general info response",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "result": {
+          "type": "object"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "result",
+        "version"
+      ]
+    }
+  }
+}

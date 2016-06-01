@@ -1,0 +1,646 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "",
+    "title": "ap-challenge-microservice",
+    "description": "TODO: Add a description",
+    "license": {
+      "name": "MIT",
+      "url": "http://github.com/gruntjs/grunt/blob/master/LICENSE-MIT"
+    }
+  },
+  "host": "api.topcoder-dev.com",
+  "basePath": "/v3",
+  "securityDefinitions": {},
+  "schemes": [
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/challenges/draft": {
+      "post": {
+        "description": "Create draft challenge",
+        "operationId": "Creates draft challenge_",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "x-is-map": false,
+            "schema": {
+              "$ref": "#/definitions/Createsdraftchallengerequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Createsdraftchallengeresponse"
+            }
+          }
+        }
+      }
+    },
+    "/challenges/?filter=fieldName%3Dvalue&limit=100&offset=101&orderBy=order": {
+      "get": {
+        "description": "These are the optional parameters, if none is provided, \nreturns 10 first challenges accessible by the user, \nordered by createAt date desc, i.e. recent 10 challenges",
+        "operationId": "Retrieves dev and design challenges_",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "filter",
+            "in": "query",
+            "required": false,
+            "x-is-map": false,
+            "type": "string",
+            "description": "parameter for filtering the fields according to v3 spec\n+ status - Active|Draft|Deleted|Completed|Cancelled - Failed Review|Cancelled - Failed Screening|Cancelled - Zero Submissions|Completed|Cancelled - Winner Unresponsive|Cancelled - Client Request|Cancelled - Requirements Infeasible|Cancelled - Zero Registrations\n+ userId - filter by challenges in which the user has a role\n+ technology - filters challenges by a given technology. Case sensitive exact match (Note this will be changed soon to support case in-sensitive matches)\n+ name - filters by challenges that contain the specified text in the name\n         non case sensitive partial search"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": true,
+            "x-is-map": false,
+            "type": "string",
+            "description": "number of messaged to be retrieved (ex: limit=100)"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": true,
+            "x-is-map": false,
+            "type": "string",
+            "description": "pagination offset (ex: offset=101)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Retrievesdevanddesignchallengesresponse"
+            }
+          }
+        }
+      }
+    },
+    "/challengeResults/?filter=fieldName%3Dvalue&limit=100&offset=101&orderBy=order": {
+      "get": {
+        "description": "These are the optional parameters, if none is provided, \nreturns 10 first results accessible by the user, \nordered by createAt date desc, i.e. recent 10 results",
+        "operationId": "Retrieves results of dev and design challenges_",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "filter",
+            "in": "query",
+            "required": false,
+            "x-is-map": false,
+            "type": "string",
+            "description": "parameter for filtering the fields according to v3 spec\n+ userId - filter by challenges in which the user has a role\n+ challengeId - id of the challenge for which to return the results."
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": true,
+            "x-is-map": false,
+            "type": "string",
+            "description": "number of messaged to be retrieved (ex: limit=100)"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": true,
+            "x-is-map": false,
+            "type": "string",
+            "description": "pagination offset (ex: offset=101)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Retrievesresultsofdevanddesignchallengesresponse"
+            }
+          }
+        }
+      }
+    },
+    "/phases/?filter=fieldName%3Dvalue&limit=100&offset=101&orderBy=order": {
+      "get": {
+        "description": "These are the optional parameters, if none is provided, \nreturns 10 first phases accessible by the user, \nordered by createAt date desc, i.e. recent 10 phases",
+        "operationId": "Retrieves phases for dev and design challenges_",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "filter",
+            "in": "query",
+            "required": false,
+            "x-is-map": false,
+            "type": "string",
+            "description": "parameter for filtering the fields according to v3 spec\n+ challengeId - The id of the challenge for which to fetch phases. Supports comma separated list\n                of values to fetch phases for multiple challenges."
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": true,
+            "x-is-map": false,
+            "type": "string",
+            "description": "number of messaged to be retrieved (ex: limit=100)"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": true,
+            "x-is-map": false,
+            "type": "string",
+            "description": "pagination offset (ex: offset=101)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Retrievesphasesfordevanddesignchallengesresponse"
+            }
+          }
+        }
+      }
+    },
+    "/marathonMatches/?filter=fieldName%3Dvalue&limit=100&offset=101&orderBy=createdAt": {
+      "get": {
+        "description": "These are the optional parameters, if none is provided, \nreturns 10 first marathon matches accessible by the user, \nordered by createAt date desc, i.e. recent 10 challenges",
+        "operationId": "Retrieves marathon matches_",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "filter",
+            "in": "query",
+            "required": false,
+            "x-is-map": false,
+            "type": "string",
+            "description": "parameter for filtering the fields according to v3 spec\n+ listType - active or past\n+ userId - filters by marathon matches in which the user has a role"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": true,
+            "x-is-map": false,
+            "type": "string",
+            "description": "number of messaged to be retrieved (ex: limit=100)"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": true,
+            "x-is-map": false,
+            "type": "string",
+            "description": "pagination offset (ex: offset=101)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Retrievesmarathonmatchesresponse"
+            }
+          }
+        }
+      }
+    },
+    "/marathonMatcheResults/?filter=fieldName%3Dvalue&limit=100&offset=101&orderBy=createdAt": {
+      "get": {
+        "description": "These are the optional parameters, if none is provided, \nreturns 10 first marathon matches results accessible by the user, \nordered by createAt date desc, i.e. recent 10 results",
+        "operationId": "Retrieves results for marathon matches_",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "filter",
+            "in": "query",
+            "required": false,
+            "x-is-map": false,
+            "type": "string",
+            "description": "parameter for filtering the fields according to v3 spec\n+ contestId - id of the marathon match\n+ userId - filters by user id"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": true,
+            "x-is-map": false,
+            "type": "string",
+            "description": "number of messaged to be retrieved (ex: limit=100)"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": true,
+            "x-is-map": false,
+            "type": "string",
+            "description": "pagination offset (ex: offset=101)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Retrievesresultsformarathonmatchesresponse"
+            }
+          }
+        }
+      }
+    },
+    "/srms/?filter=fieldName%3Dvalue&limit=100&offset=101&orderBy=createdAt": {
+      "get": {
+        "description": "These are the optional parameters, if none is provided, \nreturns 10 first SRMs accessible by the user, \nordered by createAt date desc, i.e. recent 10 challenges",
+        "operationId": "Retrieves single round matches_",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "filter",
+            "in": "query",
+            "required": false,
+            "x-is-map": false,
+            "type": "string",
+            "description": "parameter for filtering the fields according to v3 spec\n+ listType - future, active, or past\n+ userId - filters by srms in which the user has a role"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": true,
+            "x-is-map": false,
+            "type": "string",
+            "description": "number of messaged to be retrieved (ex: limit=100)"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": true,
+            "x-is-map": false,
+            "type": "string",
+            "description": "pagination offset (ex: offset=101)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Retrievessingleroundmatchesresponse"
+            }
+          }
+        }
+      }
+    },
+    "/srmResults/?filter=fieldName%3Dvalue&limit=100&offset=101&orderBy=createdAt": {
+      "get": {
+        "description": "These are the optional parameters, if none is provided, \nreturns 10 first SRM results accessible by the user, \nordered by createAt date desc, i.e. recent 10 results",
+        "operationId": "Retrieves single round matche results_",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "filter",
+            "in": "query",
+            "required": false,
+            "x-is-map": false,
+            "type": "string",
+            "description": "parameter for filtering the fields according to v3 spec\n+ userId - filters by srms in which the user has a role\n+ contestId - Id of the srm to return results"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": true,
+            "x-is-map": false,
+            "type": "string",
+            "description": "number of messaged to be retrieved (ex: limit=100)"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": true,
+            "x-is-map": false,
+            "type": "string",
+            "description": "pagination offset (ex: offset=101)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Retrievessingleroundmatcheresultsresponse"
+            }
+          }
+        }
+      }
+    },
+    "/challenges": {
+      "get": {
+        "description": "This endpoint serves results based on filter variable list_type ( active/past) and filter variable type\n( data_science / develop /design ).",
+        "operationId": "Retrieve active/past results for dev/design/data science challenges_",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "filter",
+            "in": "query",
+            "required": false,
+            "x-is-map": false,
+            "type": "string",
+            "description": "parameter for filtering the fields according to v3 spec\n+ userId - Filter by user_id\n+ challengeType\n+ challengeName - Challenge Name\n+ challengeFesc - Challenge Description\n+ challengeId \n+ platforms\n+ technologies\n+ reviewType\n+ prizeLowerBound\n+ prizeUpperBound\n+ submissionEndFrom\n+ submissionEndTo"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": true,
+            "x-is-map": false,
+            "type": "string",
+            "description": "number of messaged to be retrieved (ex: limit=100)"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": true,
+            "x-is-map": false,
+            "type": "string",
+            "description": "pagination offset (ex: offset=101)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Retrieveactive/pastresultsfordev/design/datasciencechallengesresponse"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Createsdraftchallengerequest": {
+      "title": "Creates draft challenge request",
+      "type": "object",
+      "properties": {
+        "projectId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "tcDirectProjectId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "competitionType": {
+          "type": "string"
+        },
+        "assetDTO": {
+          "type": "object"
+        },
+        "projectHeader": {
+          "type": "object"
+        },
+        "directProjectMilestoneId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "endDate": {
+          "type": "string"
+        },
+        "contestCopilotId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "contestCopilotName": {
+          "type": "string"
+        },
+        "technologies": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "platforms": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "hasMulti": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "projectId",
+        "tcDirectProjectId",
+        "competitionType",
+        "assetDTO",
+        "projectHeader",
+        "directProjectMilestoneId",
+        "endDate",
+        "contestCopilotId",
+        "contestCopilotName",
+        "technologies",
+        "platforms",
+        "hasMulti"
+      ]
+    },
+    "Createsdraftchallengeresponse": {
+      "title": "Creates draft challenge response",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "result": {
+          "type": "object"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "result",
+        "version"
+      ]
+    },
+    "Retrievesdevanddesignchallengesresponse": {
+      "title": "Retrieves dev and design challenges response",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "result": {
+          "type": "object"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "result",
+        "version"
+      ]
+    },
+    "Retrievesresultsofdevanddesignchallengesresponse": {
+      "title": "Retrieves results of dev and design challenges response",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "result": {
+          "type": "object"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "result",
+        "version"
+      ]
+    },
+    "Retrievesphasesfordevanddesignchallengesresponse": {
+      "title": "Retrieves phases for dev and design challenges response",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "result": {
+          "type": "object"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "result",
+        "version"
+      ]
+    },
+    "Retrievesmarathonmatchesresponse": {
+      "title": "Retrieves marathon matches response",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "result": {
+          "type": "object"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "result",
+        "version"
+      ]
+    },
+    "Retrievesresultsformarathonmatchesresponse": {
+      "title": "Retrieves results for marathon matches response",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "result": {
+          "type": "object"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "result",
+        "version"
+      ]
+    },
+    "Retrievessingleroundmatchesresponse": {
+      "title": "Retrieves single round matches response",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "result": {
+          "type": "object"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "result",
+        "version"
+      ]
+    },
+    "Retrievessingleroundmatcheresultsresponse": {
+      "title": "Retrieves single round matche results response",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "result": {
+          "type": "object"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "result",
+        "version"
+      ]
+    },
+    "Retrieveactive/pastresultsfordev/design/datasciencechallengesresponse": {
+      "title": "Retrieve active/past results for dev/design/data science challenges response",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "result": {
+          "type": "object"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "result",
+        "version"
+      ]
+    }
+  }
+}
