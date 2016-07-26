@@ -1,0 +1,135 @@
+swagger: "2.0"
+info:
+  version: 1.0.0
+  title: tc-resource-service
+  description: 'Services that provide access and interaction with challenge resources.'
+  license:
+    name: MIT
+    url: http://github.com/gruntjs/grunt/blob/master/LICENSE-MIT
+host: localhost:8080
+basePath: /v3
+schemes:
+- http
+- https
+securityDefinitions:
+  bearer:
+    type: apiKey
+    name: Authorization
+    in: header
+consumes:
+- application/json
+produces:
+- application/json
+paths:
+  /resources/add:
+    post:
+      description: Add Resource
+      security:
+      - bearer: []
+      produces:
+      - application/json
+      parameters:
+      - name: body
+        in: body
+        required: true
+        x-is-map: false
+        schema:
+          $ref: '#/definitions/AddResourceBody'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/ManageResourceResponse'
+  /resources/remove:
+    post:
+      description: Remove Resource
+      security:
+      - bearer: []
+      produces:
+      - application/json
+      parameters:
+      - name: body
+        in: body
+        required: true
+        x-is-map: false
+        schema:
+          $ref: '#/definitions/RemoveResourceBody'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/ManageResourceResponse'
+definitions:
+  AddResourceBody:
+    title: Add Resource Body
+    type: object
+    properties:
+      contestId:
+        type: integer
+      roleId:
+        type: integer
+      resourceUserId:
+        type: integer
+      phaseId:
+        type: integer
+      addNotification:
+        type: boolean
+      addForumWatch:
+        type: boolean
+      studio:
+        type: boolean
+      checkTerm:
+        type: boolean
+    required:
+    - contestId
+    - roleId
+    - resourceUserId
+  RemoveResourceBody:
+    title: Remove Resource Body
+    type: object
+    properties:
+      contestId:
+        type: integer
+      roleId:
+        type: integer
+      resourceUserId:
+        type: integer
+      studio:
+        type: boolean
+    required:
+    - contestId
+    - roleId
+    - resourceUserId
+  ManageResourceResponse:
+    title: The Response for managing resources
+    properties:
+      id:
+        type: string
+      version:
+        type: string
+      result:
+        $ref: '#/definitions/ManageResourceResult'
+    required:
+    - id
+    - version
+    - result
+  ManageResourceResult:
+    title: Manage Resource Result
+    type: object
+    properties:
+      success:
+        type: boolean
+      status:
+        type: integer
+      metadata:
+        type: object
+      content:
+        type: object
+        properties:
+          paymentId:
+            type: boolean
+    required:
+    - success
+    - status
+    - metadata
+    - content

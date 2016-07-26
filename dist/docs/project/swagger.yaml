@@ -1,0 +1,697 @@
+swagger: "2.0"
+info:
+  version: 1.0.0
+  title: tc-project-service
+  description: 'Services that provide access and interaction with user projects.'
+  license:
+    name: MIT
+    url: http://github.com/gruntjs/grunt/blob/master/LICENSE-MIT
+host: localhost:8080
+basePath: /v3
+schemes:
+- http
+- https
+securityDefinitions:
+  bearer:
+    type: apiKey
+    name: Authorization
+    in: header
+consumes:
+- application/json
+produces:
+- application/json
+paths:
+  /projects/user:
+    get:
+      description: Retrieves user projects
+      security:
+      - bearer: []
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/UserProjectsGetResponse'
+  /projects/{projectId}/billingaccount:
+    post:
+      description: Associate Billing Account
+      security:
+      - bearer: []
+      produces:
+      - application/json
+      parameters:
+      - name: projectId
+        in: path
+        required: true
+        x-is-map: false
+        type: string
+        description: the project id
+      - name: body
+        in: body
+        required: true
+        x-is-map: false
+        schema:
+          $ref: '#/definitions/BillingAccountBody'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/BillingAccountPostResponse'
+  /projects/{projectId}/milestones:
+    post:
+      description: Add Milestone
+      security:
+      - bearer: []
+      produces:
+      - application/json
+      parameters:
+      - name: projectId
+        in: path
+        required: true
+        x-is-map: false
+        type: string
+        description: the project id
+      - name: body
+        in: body
+        required: true
+        x-is-map: false
+        schema:
+          $ref: '#/definitions/AddMilestoneRequest'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/AddMilestoneResponse'
+  /projects/{projectId}/copilot:
+    post:
+      description: Add Copilot
+      security:
+      - bearer: []
+      produces:
+      - application/json
+      parameters:
+      - name: projectId
+        in: path
+        required: true
+        x-is-map: false
+        type: string
+        description: the project id
+      - name: body
+        in: body
+        required: true
+        x-is-map: false
+        schema:
+          $ref: '#/definitions/CopilotRequestBody'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/CopilotPostResponse'
+    delete:
+      description: Remove Copilot
+      security:
+      - bearer: []
+      produces:
+      - application/json
+      parameters:
+      - name: projectId
+        in: path
+        required: true
+        x-is-map: false
+        type: string
+        description: the project id
+      - name: body
+        in: body
+        required: true
+        x-is-map: false
+        schema:
+          $ref: '#/definitions/CopilotRequestBody'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/CopilotDeleteResponse'
+  /projects:
+    post:
+      description: Create Project
+      security:
+      - bearer: []
+      produces:
+      - application/json
+      parameters:
+      - name: body
+        in: body
+        required: true
+        x-is-map: false
+        schema:
+          $ref: '#/definitions/ProjectRequestBody'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/ProjectPostResponse'
+  /projects/{projectId}:
+    get:
+      description: Retrieves project general info
+      security:
+      - bearer: []
+      produces:
+      - application/json
+      parameters:
+      - name: projectId
+        in: path
+        required: true
+        x-is-map: false
+        type: string
+        description: the project id
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/ProjectGetResponse'
+        400:
+          description: Unexpected error in API call. See HTTP response body for details.
+definitions:
+  BillingAccountBody:
+    title: Billing Account Body
+    type: object
+    properties:
+      billingAccountId:
+        type: integer
+        format: int32
+    required:
+    - billingAccountId
+  BillingAccountPostResponse:
+    title: Billing Account Response
+    properties:
+      id:
+        type: string
+      version:
+        type: string
+      result:
+        $ref: '#/definitions/BillingAccountPostResult'
+    required:
+    - id
+    - version
+    - result
+  BillingAccountPostResult:
+    title: Billing Account Result
+    type: object
+    properties:
+      success:
+        type: boolean
+      status:
+        type: integer
+      metadata:
+        type: object
+      content:
+        type: array
+        items:
+          $ref: '#/definitions/BillingAccount'
+    required:
+    - success
+    - status
+    - metadata
+    - content
+  BillingAccount:
+    title: Billing Account
+    type: object
+    properties:
+      billingAccountName:
+        type: string
+    required:
+    - billingAccountName
+  CopilotRequestBody:
+    title: Add Copilot request
+    type: object
+    properties:
+      copilotUserId:
+        type: integer
+    required:
+    - copilotUserId
+  CopilotPostResponse:
+    title: Copilot Response
+    properties:
+      id:
+        type: string
+      version:
+        type: string
+      result:
+        $ref: '#/definitions/CopilotPostResult'
+    required:
+    - id
+    - version
+    - result
+  CopilotPostResult:
+    title: Copilot Result
+    type: object
+    properties:
+      success:
+        type: boolean
+      status:
+        type: integer
+      metadata:
+        type: object
+      content:
+        $ref: '#/definitions/CopilotPostContent'
+    required:
+    - success
+    - status
+    - metadata
+    - content
+  CopilotPostContent:
+    title: Copilot Post Content
+    type: object
+    properties:
+      copilotProjectId:
+        type: integer
+    required:
+    - copilotProjectId
+  CopilotDeleteResponse:
+    title: Copilot Delete Response
+    type: object
+    properties:
+      id:
+        type: string
+      version:
+        type: string
+      result:
+        $ref: '#/definitions/CopilotDeleteResult'
+    required:
+    - id
+    - version
+    - result
+  CopilotDeleteResult:
+    title: Copilot Delete Result
+    type: object
+    properties:
+      success:
+        type: boolean
+      status:
+        type: integer
+      metadata:
+        type: object
+      content:
+        type: boolean
+    required:
+    - success
+    - status
+    - metadata
+    - content
+  ProjectRequestBody:
+    title: Project Request Body
+    type: object
+    properties:
+      projectName:
+        type: string
+      projectDescription:
+        type: string
+    required:
+    - projectName
+  ProjectPostResponse:
+    title: Project Post Response
+    type: object
+    properties:
+      id:
+        type: string
+      version:
+        type: string
+      result:
+        $ref: '#/definitions/ProjectPostResult'
+    required:
+    - id
+    - version
+    - result
+  ProjectPostResult:
+    title: Project Post Result
+    type: object
+    properties:
+      success:
+        type: boolean
+      status:
+        type: integer
+      metadata:
+        type: object
+      content:
+        $ref: '#/definitions/ProjectPostContent'
+    required:
+    - success
+    - status
+    - metadata
+    - content
+  ProjectPostContent:
+    title: Project Post Content
+    type: object
+    properties:
+      projectId:
+        type: integer
+    required:
+    - projectId
+  ProjectGetResponse:
+    title: Project Get Response
+    type: object
+    properties:
+      id:
+        type: string
+      version:
+        type: string
+      result:
+        $ref: '#/definitions/ProjectGetResult'
+    required:
+    - id
+    - version
+    - result
+  ProjectGetResult:
+    title: Project Get Result
+    type: object
+    properties:
+      success:
+        type: boolean
+      status:
+        type: integer
+      metadata:
+        type: object
+      content:
+        $ref: '#/definitions/ProjectGetContent'
+    required:
+    - success
+    - status
+    - metadata
+    - content
+  ProjectGetContent:
+    title: Project Get Content
+    type: object
+    properties:
+      project:
+        $ref: '#/definitions/ProjectGetContentProject'
+      permissionInfo:
+        $ref: '#/definitions/PermissionInfo'
+      svn:
+        type: string
+      jira:
+        type: string
+      totalBudget:
+        type: integer
+      actualCost:
+        type: integer
+      projectedCost:
+        type: integer
+      plannedDuration:
+        type: integer
+      actualDuration:
+        type: integer
+      projectedDuration:
+        type: integer
+      clientManagers:
+        type: array
+        items:
+          type: integer
+      topcoderManagers:
+        type: array
+        items:
+          type: integer
+      accountManagers:
+        type: array
+        items:
+          type: integer
+      appirioManager:
+        type: string
+      projectResourceEmails:
+        type: object
+      clientManagersHandles:
+        type: object
+      topcoderManagersHandles:
+        type: object
+      accountManagersHandles:
+        type: object
+      copilotHandles:
+        type: object
+      businessImpactRating:
+        type: integer
+      riskLevelRating:
+        type: integer
+      costRating:
+        type: integer
+      difficultyRating:
+        type: integer
+      roiRating:
+        type: integer
+      additionalProjectInfo:
+        type: object
+      canAccessPermissionEdit:
+        type: boolean
+      statusLabel:
+        type: string
+    required:
+    - project
+    - permissionInfo
+    - statusLabel
+  ProjectGetContentProject:
+    title: Project Get Content Project
+    type: object
+    properties:
+      projectId:
+        type: integer
+      name:
+        type: string
+      description:
+        type: string
+      projectStatusId:
+        type: integer
+      forumCategoryId:
+        type: integer
+      creationDate:
+        type: string
+      completionDate:
+        type: string
+      projectType:
+        type: string
+      projectCategory:
+        type: string
+      fixedBugContestFee:
+        type: integer
+      percentageBugContestFee:
+        type: integer
+      projectBillingAccountId:
+        type: integer
+      projectAnswers:
+        type: array
+        items:
+          $ref: '#/definitions/ProjectAnswer'
+    required:
+    - projectId
+    - name
+    - projectStatusId
+  PermissionInfo:
+    title: Permission Info
+    type: object
+    properties:
+      reportPermissionNumber:
+        type: integer
+      readPermissionNumber:
+        type: integer
+      writePermissionNumber:
+        type: integer
+      fullPermissionNumber:
+        type: integer
+      totalPermissionNumber:
+        type: integer
+    required:
+    - reportPermissionNumber
+    - readPermissionNumber
+    - writePermissionNumber
+    - fullPermissionNumber
+    - totalPermissionNumber
+  ProjectAnswer:
+    title: Project Get Content Project Answer
+    type: object
+    properties:
+      id:
+        type: integer
+      textualAnswer:
+        type: string
+      multipleAnswers:
+        type: array
+        items:
+          type: string
+      optionAnswers:
+        type: array
+        items:
+          $ref: '#/definitions/OptionalAnswer'
+      projectQuestion:
+        $ref: '#/definitions/ProjectQuestion'
+      project:
+        type: string
+    required:
+    - id
+  OptionalAnswer:
+    title: Project Get Content Project Answer Optional Answer
+    type: object
+    properties:
+      id:
+        type: integer
+      projectQuestionOption:
+        $ref: '#/definitions/ProjectQuestionOption'
+      projectAnswer:
+        type: string
+      answerHtmlValue:
+        type: string
+    required:
+    - id
+    - answerHtmlValue
+  ProjectQuestion:
+    title: Project Question
+    type: object
+    properties:
+      id:
+        type: integer
+      questionText:
+        type: string
+      questionOptions:
+        type: array
+        items:
+          $ref: '#/definitions/ProjectQuestionOption'
+      answerHtmlId:
+        type: string
+      directProjectType:
+        $ref: '#/definitions/DirectProjectType'
+      multipleAnswersHtmlXpath:
+        type: string
+    required:
+    - id
+    - questionText
+  ProjectQuestionOption:
+    title: Project Question Option
+    type: object
+    properties:
+      id:
+        type: integer
+      questionOptionText:
+        type: string
+      projectQuestion:
+        type: string
+      answerHtmlId:
+        type: string
+      hasAssociatedTextbox:
+        type: boolean
+      associatedTextboxHtmlId:
+        type: string
+    required:
+    - id
+  DirectProjectType:
+    title: Direct Project Type
+    type: object
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      projectQuestions:
+        type: array
+        items:
+          $ref: '#/definitions/ProjectQuestion'
+    required:
+    - id
+    - name
+  UserProjectsGetResponse:
+    title: User Projects Response
+    type: object
+    properties:
+      id:
+        type: string
+      version:
+        type: string
+      result:
+        $ref: '#/definitions/UserProjectResult'
+    required:
+    - id
+    - version
+    - result
+  UserProjectResult:
+    title: User Project Result
+    type: object
+    properties:
+      success:
+        type: boolean
+      status:
+        type: integer
+      metadata:
+        type: object
+      content:
+        type: array
+        items:
+          $ref: '#/definitions/UserProjectContent'
+    required:
+    - success
+    - status
+    - metadata
+    - content
+  UserProjectContent:
+    title: User Project
+    type: object
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      customerId:
+        type: integer
+      customerName:
+        type: string
+      projectForumCategoryId:
+        type: integer
+    required:
+    - id
+    - name
+    - customerId
+    - customerName
+  AddMilestoneRequest:
+    title: Add Milestone Request
+    type: object
+    properties:
+      name:
+        type: string
+      description:
+        type: string
+      status:
+        type: string
+      dueDate:
+        type: integer
+    required:
+    - name
+    - description
+    - status
+    - dueDate
+  AddMilestoneResponse:
+    title: Add Milestone Response
+    type: object
+    properties:
+      id:
+        type: string
+      version:
+        type: string
+      result:
+        $ref: '#/definitions/AddMilestoneResult'
+    required:
+    - id
+    - version
+    - result
+  AddMilestoneResult:
+    title: Add Milestone Result
+    type: object
+    properties:
+      success:
+        type: boolean
+      status:
+        type: integer
+      metadata:
+        type: object
+      content:
+        type: integer
+    required:
+    - success
+    - status
+    - metadata
+    - content

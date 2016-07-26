@@ -1,0 +1,107 @@
+swagger: "2.0"
+info:
+  version: 1.0.0
+  title: tc-payment-service
+  description: 'Services that provide access and interaction with user payments.'
+  license:
+    name: MIT
+    url: http://github.com/gruntjs/grunt/blob/master/LICENSE-MIT
+host: localhost:8080
+basePath: /v3
+schemes:
+- http
+- https
+securityDefinitions:
+  bearer:
+    type: apiKey
+    name: Authorization
+    in: header
+consumes:
+- application/json
+produces:
+- application/json
+paths:
+  /payments:
+    post:
+      description: Add Payment
+      security:
+      - bearer: []
+      produces:
+      - application/json
+      parameters:
+      - name: body
+        in: body
+        required: true
+        x-is-map: false
+        schema:
+          $ref: '#/definitions/AddPaymentBody'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/AddPaymentResponse'
+definitions:
+  AddPaymentBody:
+    title: Billing Account Body
+    type: object
+    properties:
+      paymentTypeId:
+        type: integer
+      coderId:
+        type: integer
+      grossAmount:
+        type: number
+        format: float
+      referenceId:
+        type: integer
+      placed:
+        type: integer
+      netAmount:
+        type: number
+        format: float
+      description:
+        type: string
+      client:
+        type: string
+      jiraIssueName:
+        type: string
+    required:
+    - paymentTypeId
+    - coderId
+    - grossAmount
+    - referenceId
+    - placed
+    - jiraIssueName
+  AddPaymentResponse:
+    title: Add Payment Response
+    properties:
+      id:
+        type: string
+      version:
+        type: string
+      result:
+        $ref: '#/definitions/AddPaymentResult'
+    required:
+    - id
+    - version
+    - result
+  AddPaymentResult:
+    title: Add Payment Result
+    type: object
+    properties:
+      success:
+        type: boolean
+      status:
+        type: integer
+      metadata:
+        type: object
+      content:
+        type: object
+        properties:
+          paymentId:
+            type: integer
+    required:
+    - success
+    - status
+    - metadata
+    - content

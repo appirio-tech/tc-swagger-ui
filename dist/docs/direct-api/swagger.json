@@ -1,0 +1,270 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "",
+    "title": "Direct API",
+    "description": "TODO: Add a description",
+    "license": {
+      "name": "MIT",
+      "url": "http://github.com/gruntjs/grunt/blob/master/LICENSE-MIT"
+    }
+  },
+  "host": "www.example.com",
+  "basePath": "/",
+  "securityDefinitions": {},
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/challenges": {
+      "get": {
+        "description": "",
+        "tags": [
+          "Challenges"
+        ],
+        "operationId": "List all challenges_",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "metadata",
+            "in": "query",
+            "required": false,
+            "x-is-map": false,
+            "enum": [
+              "false",
+              "true"
+            ],
+            "type": "string",
+            "description": "whether to display metadata which contains the total number of records after applying the filters"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "x-is-map": false,
+            "default": "10",
+            "type": "number",
+            "format": "double",
+            "description": "maximum number of results"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "x-is-map": false,
+            "default": "0",
+            "type": "number",
+            "format": "double",
+            "description": "starting record number of all the filtered records"
+          },
+          {
+            "name": "orderBy",
+            "in": "query",
+            "required": false,
+            "x-is-map": false,
+            "enum": [
+              "id",
+              "challengeName",
+              "challengeType",
+              "clientName",
+              "clientId",
+              "billingName",
+              "billingId",
+              "directProjectName",
+              "directProjectId",
+              "challengeStartDate",
+              "challengeEndDate",
+              "drPoints",
+              "challengeStatus",
+              "challengeCreator"
+            ],
+            "type": "string",
+            "description": "Filed name to sort and the optional sort order. The format is like *fieldName {desc nulls last | asc nulls first}*\nThe support orderBy field names are listed below. The default sorting order is *id desc*, if other order type is specified, *id desc* is used as the second sorting order."
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "required": false,
+            "x-is-map": false,
+            "type": "string",
+            "description": "The filter string. The filter string is like *{fieldName1}={fieldValue1}&...{fieldNameN}={fieldValueN}*. String value needs to be surrounded by single quotation(‘). *filedValue* can contain multiple values using in() format\n*{fieldName}=in({fieldValue1},{fieldValue1})*\nThe support filedName\n- *type* : should be one of 'active', 'past', draft'\n- *creator* : if specified, should only be current user's handle. When this is specified, challenges created by current user are filtered out.\n- *directProjectId*: the Direct Project ID of the challenges\n- *clientId* the client ID of Direct Project of the challenges\n- *billingId* the billing ID used for challenges\n- *startDateFrom* the start date FROM date of the challenge, in format MM/dd/yyyy\n- *startDateTo* the start date TO date of the challenge, in format MM/dd/yyyy\n- *endDateFrom* the end date FROM date of the challenge, in format MM/dd/yyyy\n- *endDateTo* the end date TO date of the challenge, in format MM/dd/yyyy"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Listallchallengesresponse"
+            }
+          }
+        }
+      }
+    },
+    "/projects": {
+      "get": {
+        "description": "",
+        "tags": [
+          "Projects"
+        ],
+        "operationId": "List all Projects_",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "metadata",
+            "in": "query",
+            "required": false,
+            "x-is-map": false,
+            "enum": [
+              "false",
+              "true"
+            ],
+            "type": "string",
+            "description": "whether to display metadata which contains the total number of records after applying the filters"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "x-is-map": false,
+            "default": "10",
+            "type": "number",
+            "format": "double",
+            "description": "maximum number of results"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "x-is-map": false,
+            "default": "0",
+            "type": "number",
+            "format": "double",
+            "description": "starting record number of all the filtered records"
+          },
+          {
+            "name": "orderBy",
+            "in": "query",
+            "required": false,
+            "x-is-map": false,
+            "enum": [
+              "projectId",
+              "projectName",
+              "projectStatus",
+              "projectCreatedDate",
+              "projectUpdatedDate"
+            ],
+            "type": "string",
+            "description": "Filed name to sort and the optional sort order. The format is like *fieldName {desc nulls last | asc nulls first}*\nThe support orderBy field names are listed below. The default sorting order is *projectId desc*, if other order type is specified, *projectId desc* is used as the second sorting order."
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "required": false,
+            "x-is-map": false,
+            "type": "string",
+            "description": "The filter string. The filter string is like *{fieldName1}={fieldValue1}&...{fieldNameN}={fieldValueN}*. String value needs to be surrounded by single quotation(‘). *filedValue* can contain multiple values using in() format\n*{fieldName}=in({fieldValue1},{fieldValue1})*\nThe support filedName\n- *name* : the project name exact match, the match is case-sensitive.\n- *nameLike* : the project name particial match, it cannot be used together with *name* filter. For particial match pattern, use _?_ to match any single character, use _*_ to match any string of zero or more characters, use _[...]_ to match any of the enclosed characters, including ranges, as in [a-z]. Characters within the brackets cannot be escaped. Examples are like `*tennis*` , `[Ff]rank`, `*[a-d]`.\n- *id*: the Direct Project ID \n- *billingName*: the billing account name extact match, the match is case-sensitive\n- *billingNameLike*: the billing account name particial match, it cannot be used together with *billingName* filter. For particial match pattern, use _?_ to match any single character, use _*_ to match any string of zero or more characters, use _[...]_ to match any of the enclosed characters, including ranges, as in [a-z]. Characters within the brackets cannot be escaped. Examples are like `*tennis*` , `[Ff]rank`, `*[a-d]`.\n- *projectStatus*: the project status id or project status name.\n- *scope*: only can be used when the user is admin. two values are supported\n    - *my*: filter the projects the user has permission with\n    - *all*: all the existing direct projects"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ListallProjectsresponse"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Listallchallengesresponse": {
+      "title": "List all challenges response",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "result": {
+          "type": "object"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "result",
+        "version"
+      ]
+    },
+    "ListallProjectsresponse": {
+      "title": "List all Projects response",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "result": {
+          "type": "object"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "result",
+        "version"
+      ]
+    },
+    "metadata": {
+      "title": "metadata",
+      "type": "string",
+      "enum": [
+        "false",
+        "true"
+      ]
+    },
+    "orderBy": {
+      "title": "orderBy",
+      "type": "string",
+      "enum": [
+        "id",
+        "challengeName",
+        "challengeType",
+        "clientName",
+        "clientId",
+        "billingName",
+        "billingId",
+        "directProjectName",
+        "directProjectId",
+        "challengeStartDate",
+        "challengeEndDate",
+        "drPoints",
+        "challengeStatus",
+        "challengeCreator"
+      ]
+    },
+    "orderBy3": {
+      "title": "orderBy3",
+      "type": "string",
+      "enum": [
+        "projectId",
+        "projectName",
+        "projectStatus",
+        "projectCreatedDate",
+        "projectUpdatedDate"
+      ]
+    }
+  }
+}
