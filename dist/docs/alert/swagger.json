@@ -1,0 +1,219 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.1",
+        "title": "ap-alert-microservice",
+        "description": "Alert microservice provides endpoints to support alerts to users of member dashboard. It has basic endpoints to query, create and update alerts.",
+        "license": {
+            "name": "MIT",
+            "url": "http://github.com/gruntjs/grunt/blob/master/LICENSE-MIT"
+        }
+    },
+    "host": "localhost:8080",
+    "basePath": "/v3",
+    "schemes": [
+        "http",
+        "https"
+    ],
+    "securityDefinitions": {
+        "bearer": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    },
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/alerts": {
+            "post": {
+                "description": "This endpoint is used to create a alert for a particular user. The endpoint is invoked by subscribing to events on a service bus.",
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "x-is-map": false,
+                        "schema": {
+                            "$ref": "#/definitions/AddAlertRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Response"
+                        }
+                    }
+                }
+            },
+            "get": {
+                "description": "The endpoint is used for querying alerts of a particular user. If severity and status are not part of the input then all the alerts are returned ordered by createdAt. If status is set as \"UNREAD\", all unread unexpired alerts are returned ordered by severity and expiration timestamp. Alerts with empty expiration are considered unexpired for their lifetime. If status is set as \"UNREAD\" and severity is set as \"HIGH\", all unread unexpired high severity alerts are returned ordered by expiration timestamp.",
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "filter",
+                        "in": "query",
+                        "required": false,
+                        "type": "string",
+                        "description": "parameter for filtering the fields according to v3 spec"
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "required": false,
+                        "type": "number",
+                        "description": "number of messaged to be retrieved (ex: limit=100)"
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "required": false,
+                        "type": "number",
+                        "description": "pagination offset (ex: offset=101)"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/alerts/{id}": {
+            "put": {
+                "description": "This endpoint is used to update an existing alert or create a new alert if an alert with the Id doesn't exist. Only status is updated and none of the other parameters are updated.",
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "number"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "x-is-map": false,
+                        "schema": {
+                            "$ref": "#/definitions/UpdateAlertRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Response"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "AddAlertRequest": {
+            "title": "The add alert request",
+            "description": "A object containing information to create a new alert",
+            "type": "object",
+            "properties": {
+                "eventType": {
+                    "type": "string"
+                },
+                "payload": {
+                    "type": "string"
+                }
+            }
+        },
+        "UpdateAlertRequest": {
+            "title": "The update alert request",
+            "description": "A object containing information to update the original alert",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "number"
+                },
+                "userId": {
+                    "type": "number"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "Response": {
+            "title": "Response",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "version": {
+                    "type": "string"
+                },
+                "result": {
+                    "$ref": "#/definitions/Result"
+                }
+            },
+            "required": [
+                "id",
+                "version",
+                "result"
+            ]
+        },
+        "Result": {
+            "title": "Result",
+            "type": "object",
+            "properties": {
+                "success": {
+                    "type": "boolean"
+                },
+                "status": {
+                    "type": "integer"
+                },
+                "metadata": {
+                    "type": "object"
+                },
+                "content": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "success",
+                "status",
+                "metadata",
+                "content"
+            ]
+        }
+    }
+}
